@@ -14,7 +14,7 @@
     </servlet>
     <servlet>
         <servlet-name>ViewAllCase</servlet-name>
-        <servlet-class>controller.ViewAllCase</servlet-class>
+        <servlet-class>controller.ViewAllCaseController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ViewNationController</servlet-name>

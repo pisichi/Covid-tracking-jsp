@@ -37,36 +37,21 @@ public static DailyData getData() throws Exception {
         }
         in.close();
         
-        JSONObject myResponse = new JSONObject(response.toString());
-        //JSONArray msg = (JSONArray) myResponse.get("Data");
-        
+        JSONObject myResponse = new JSONObject(response.toString());    
         DailyData data = new DailyData();
 
         data.setConfirmed(myResponse.getInt("Confirmed"));
         data.setRecovered(myResponse.getInt("Recovered"));
         data.setDeath(myResponse.getInt("Deaths"));
         data.setHospitalized(myResponse.getInt("Hospitalized"));
+        data.setNewConfirmed(myResponse.getInt("NewConfirmed"));
         data.setNewDeaths(myResponse.getInt("NewDeaths"));
         data.setNewRecovered(myResponse.getInt("NewRecovered"));
         data.setNewHospitalized(myResponse.getInt("NewHospitalized"));
         data.setUpdateDate(myResponse.getString("UpdateDate"));
         
-  
-//        ObjectMapper mapper = new ObjectMapper();
-//        
-//        mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-//        
-//       DailyData data = mapper.readValue(response.toString(),DailyData.class);
-//             
-//       String prettyStaff1 = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(data);
-
-       //System.out.println(prettyStaff1);
         return data;
 
-
-     
-
- 
 }
          
   

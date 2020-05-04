@@ -8,10 +8,18 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.AllCasesData;
+import model.CaseSumData;
+import org.json.JSONArray;
+import service.CaseSumService;
+import service.OpenCasesService;
+import service.TimelineService;
 
 /**
  *
@@ -30,7 +38,18 @@ public class DailyController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-          request.getRequestDispatcher("index.jsp").forward(request, response);
+        
+        try {
+     //JSONArray caseArr = OpenCasesService.getData();
+     AllCasesData data = OpenCasesService.getDatas();
+     CaseSumData gender = CaseSumService.getGender();
+     
+     request.setAttribute("OpenCase",data);
+     request.setAttribute("CaseSum",gender);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(DailyController.class.getName()).log(Level.SEVERE, null, ex);
+        }
       
     }
 

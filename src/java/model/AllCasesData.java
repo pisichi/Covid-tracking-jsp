@@ -12,9 +12,18 @@ import java.util.List;
  *
  * @author User
  */
-public class TimelineData {
-    private  String UpdateDate;
-    private List<DailyData> Daily = new ArrayList<>();
+public class AllCasesData {
+    private String LastData;
+    private String UpdateDate;
+    private List<CasesData> Cases = new ArrayList<>();
+
+    public String getLastData() {
+        return LastData;
+    }
+
+    public void setLastData(String LastData) {
+        this.LastData = LastData;
+    }
 
     public String getUpdateDate() {
         return UpdateDate;
@@ -24,13 +33,14 @@ public class TimelineData {
         this.UpdateDate = UpdateDate;
     }
 
-    public List<DailyData> getDaily() {
-        return Daily;
+    public List<CasesData> getCases() {
+        return Cases;
     }
 
-    public void setDaily(List<DailyData> Daily) {
-        this.Daily = Daily;
+    public void setCases(List<CasesData> Cases) {
+        this.Cases = Cases;
     }
     
     
+
 }

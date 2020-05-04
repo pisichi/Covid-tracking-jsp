@@ -18,6 +18,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import model.DailyData;
+import model.TimelineData;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -26,32 +28,51 @@ import org.json.JSONObject;
  * @author User
  */
 public class TimelineService {
-    
-    public static JSONArray getData() throws Exception {
-	String url = "https://covid19.th-stat.com/api/open/timeline";
+
+  
+
+    public static TimelineData getDatas() throws Exception {
+        String url = "https://covid19.th-stat.com/api/open/timeline";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         con.setRequestMethod("GET");
 
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
-        
+
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
         String inputLine;
         StringBuffer response = new StringBuffer();
         while ((inputLine = in.readLine()) != null) {
-        	response.append(inputLine);
+            response.append(inputLine);
         }
         in.close();
-        
-      
+
         JSONObject myResponse = new JSONObject(response.toString());
+
+        TimelineData data = new TimelineData();
+        data.setUpdateDate(myResponse.getString("UpdateDate"));
         JSONArray jArr = (JSONArray) myResponse.get("Data");
-        
-        return jArr;
+        List<DailyData> daily = new ArrayList<>();
+       
+
+        for (int i = 0; i < jArr.length(); i++) {
+            JSONObject innerObj = (JSONObject) jArr.get(i);
+            DailyData subdata = new DailyData();
+            subdata.setConfirmed(innerObj.getInt("Confirmed"));
+            subdata.setNewConfirmed(innerObj.getInt("NewConfirmed"));
+            subdata.setRecovered(innerObj.getInt("Recovered"));
+            subdata.setNewRecovered(innerObj.getInt("NewRecovered"));
+            subdata.setDeath(innerObj.getInt("Deaths"));
+            subdata.setNewDeaths(innerObj.getInt("NewDeaths"));
+            subdata.setHospitalized(innerObj.getInt("Hospitalized"));
+            subdata.setNewHospitalized(innerObj.getInt("NewHospitalized"));
+            subdata.setUpdateDate(innerObj.getString("Date"));
+            daily.add(i,subdata);
+        }
+        data.setDaily(daily);
+        return data;
     }
-    
-    
-    
+
 }

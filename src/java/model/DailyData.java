@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -14,22 +13,41 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DailyData {
-    
-        private  int Confirmed;
-        private  int Recovered;
-        private  int Hospitalized;
-        private  int Deaths;
-        private  int NewRecovered;
-        private  int NewHospitalized;
-        private  int NewDeaths;
-        private  String UpdateDate;
 
+    private int Confirmed;
+    private int NewConfirmed;
+    private int Recovered;
+    private int NewRecovered;
+    private int Hospitalized;
+    private int NewHospitalized;
+    private int Deaths;
+    private int NewDeaths;
+    private String UpdateDate;
+
+    
+    
     public int getConfirmed() {
         return Confirmed;
     }
 
     public void setConfirmed(int Confirmed) {
         this.Confirmed = Confirmed;
+    }
+
+    public int getNewConfirmed() {
+        return NewConfirmed;
+    }
+
+    public void setNewConfirmed(int NewConfirmed) {
+        this.NewConfirmed = NewConfirmed;
+    }
+
+    public int getDeaths() {
+        return Deaths;
+    }
+
+    public void setDeaths(int Deaths) {
+        this.Deaths = Deaths;
     }
 
     public int getRecovered() {
@@ -88,9 +106,4 @@ public class DailyData {
         this.UpdateDate = UpdateDate;
     }
 
-    
-
-   
-    
-    
 }

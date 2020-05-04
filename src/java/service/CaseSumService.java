@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import model.CaseSumData;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -65,7 +66,7 @@ public class CaseSumService {
         
         
         
-        public static JSONObject getGender() throws Exception {
+        public static CaseSumData getGender() throws Exception {
 	String url = "https://covid19.th-stat.com/api/open/cases/sum";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -80,10 +81,13 @@ public class CaseSumService {
         	response.append(inputLine);
         }
         in.close();
-       
+        CaseSumData data = new CaseSumData();
         JSONObject myResponse = new JSONObject(response.toString());
         JSONObject Gender = (JSONObject) myResponse.get("Gender");
-        return Gender;
+        data.setMale(Gender.getInt("Male"));
+        data.setFemale(Gender.getInt("Female"));
+        
+        return data;
     }
     
 }

@@ -14,6 +14,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.AllCasesData;
+import model.ReportData;
 import service.OpenCasesService;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,7 +25,7 @@ import service.CaseSumService;
  *
  * @author User
  */
-public class ViewAllCase extends HttpServlet {
+public class ViewAllCaseController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,7 +40,8 @@ public class ViewAllCase extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-        JSONArray caseArr = new JSONArray();
+        //JSONArray caseArr = new JSONArray();
+        AllCasesData data = new AllCasesData();
         int ageMin = 0;
         int ageMax = 0;
         try {
@@ -46,26 +49,38 @@ public class ViewAllCase extends HttpServlet {
 
             String gender = request.getParameter("gender");
             String nation = request.getParameter("nation");
+            String province = request.getParameter("province");
             String min = request.getParameter("min");
             String max = request.getParameter("max");
             
             JSONObject country = CaseSumService.getNation();
+            JSONObject provinces = CaseSumService.getProvince();
             
-            if(gender == null && nation == null &&  min == null && max == null)
-             caseArr = OpenCasesService.getData();
+            if(gender == null && nation == null &&  min == null && max == null && province == null)
+            data = OpenCasesService.getDatas();
 
             else
-             caseArr = OpenCasesService.getDataParam(nation, min, max, gender);
-                    
-            request.setAttribute("OpenCase", caseArr);
+            data = OpenCasesService.getDataParams(nation,province, min, max, gender);
+            
+            
+            ReportData report = OpenCasesService.makeReport(data);
+            
+            request.setAttribute("OpenCase", data);
             request.setAttribute("Country", country);
+            request.setAttribute("Province", provinces);
+            
+            
+            request.setAttribute("Report", report);
+            
+            
+            request.setAttribute("province", province);
             request.setAttribute("gender", gender);
             request.setAttribute("nation", nation);
             request.setAttribute("min", min);
             request.setAttribute("max", max);
             request.getRequestDispatcher("viewallcase.jsp").forward(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(ViewAllCase.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ViewAllCaseController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

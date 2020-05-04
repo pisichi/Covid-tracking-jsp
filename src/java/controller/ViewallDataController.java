@@ -7,12 +7,15 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.DailyData;
+import model.TimelineData;
 import service.OpenCasesService;
 import service.TimelineService;
 import org.json.JSONArray;
@@ -35,10 +38,14 @@ public class ViewallDataController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            JSONArray jArr = TimelineService.getData();
-
+            //JSONArray jArr = TimelineService.getData();
+            
+          TimelineData data = TimelineService.getDatas();
+          System.out.print(data.getUpdateDate());
+           List<DailyData> jArr = data.getDaily();
+            System.out.print(jArr.get(0).getUpdateDate());
           int a = 1;
-           request.setAttribute("Timeline", jArr);
+           request.setAttribute("Timeline", data);
            request.setAttribute("num", a);
 
 
