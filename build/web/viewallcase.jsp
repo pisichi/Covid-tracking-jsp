@@ -23,7 +23,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 
-        <title>JSP Page</title>
+        <title>Cases</title>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark site-header sticky-top">
@@ -123,7 +123,7 @@
                             <input name="max" type="text" class="form-control" >
                         </div>
                         <div  class="form-group col-md-2">
-                            <button  class="btn btn-primary" type="submit" value="Submit"> search </button>
+                            <button  class="btn btn-warning" type="submit" value="Submit"> search </button>
                         </div>
                     </div>
 
@@ -154,36 +154,36 @@
                 </div>
 
                 <div class = "col my-auto">
-                     <div class="row justify-content-end align-items-end">
+                    <div class="row justify-content-end align-items-end">
 
 
-                    <%
-                        String gender = (String) request.getAttribute("gender");
-                        String nation = (String) request.getAttribute("nation");
-                        String province = (String) request.getAttribute("province");
-                        String min = (String) request.getAttribute("min");
-                        String max = (String) request.getAttribute("max");
+                        <%
+                            String gender = (String) request.getAttribute("gender");
+                            String nation = (String) request.getAttribute("nation");
+                            String province = (String) request.getAttribute("province");
+                            String min = (String) request.getAttribute("min");
+                            String max = (String) request.getAttribute("max");
 
-                        if (gender != null) {
-                            out.println("<span class='badge badge-pill badge-info mx-1'>" + gender + "</span>");
-                        }
+                            if (gender != null) {
+                                out.println("<span class='badge badge-pill badge-info mx-1'>" + gender + "</span>");
+                            }
 
-                        if (nation != null) {
-                            out.println("<span class='badge badge-pill badge-success mx-1'>" + nation + "</span>");
-                        }
+                            if (nation != null) {
+                                out.println("<span class='badge badge-pill badge-success mx-1'>" + nation + "</span>");
+                            }
 
-                        if (province != null) {
-                            out.println("<span class='badge badge-pill badge-primary mx-1'>" + province + "</span>");
-                        }
+                            if (province != null) {
+                                out.println("<span class='badge badge-pill badge-primary mx-1'>" + province + "</span>");
+                            }
 
-                        if (min != null && max != null) {
+                            if (min != null && max != null) {
 
-                            out.println("<span class='badge badge-pill badge-warning mx-1'> age: " + min);
-                            out.println(" - " + max);
-                            out.print("</span>");
-                        }
+                                out.println("<span class='badge badge-pill badge-warning mx-1'> age: " + min);
+                                out.println(" - " + max);
+                                out.print("</span>");
+                            }
 
-                    %>
+                        %>
                     </div>
                 </div>
 
@@ -230,32 +230,32 @@
 
         </div>
     </body>
-                                        <footer class="page-footer font-small bg-dark pt-4 text-white">
+    <footer class="page-footer font-small bg-dark pt-4 text-white">
 
 
-                                            <div class="container">
+        <div class="container">
 
 
-                                                <ul class="list-unstyled list-inline text-center py-2">
-                                                    <li class="list-inline-item">
-                                                        <h5 class="mb-1">Data provided by </h5>
-                                                    </li>
-                                                    <li class="list-inline-item">
-                                                        <a href="https://covid19.th-stat.com/th/api" class="btn btn-outline-white btn-rounded">Covid-19 stat</a>
-                                                    </li>
-                                                </ul>
+            <ul class="list-unstyled list-inline text-center py-2">
+                <li class="list-inline-item">
+                    <h5 class="mb-1">Data provided by </h5>
+                </li>
+                <li class="list-inline-item">
+                    <a href="https://covid19.th-stat.com/th/api" class="btn btn-outline-white btn-rounded">Covid-19 stat</a>
+                </li>
+            </ul>
 
 
-                                            </div>
+        </div>
 
 
 
-                                            <div class="footer-copyright text-center py-3">
-                                                <a> 60050223 pisitchai siriratanachaikul</a>
-                                            </div>
+        <div class="footer-copyright text-center py-3">
+            <a> 60050223 pisitchai siriratanachaikul</a>
+        </div>
 
 
-                                        </footer>
+    </footer>
 
 
 

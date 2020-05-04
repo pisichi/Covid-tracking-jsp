@@ -23,33 +23,6 @@
 %>
 
 
-<%
-    Gson gsonObj = new Gson();
-    Map<Object, Object> map = null;
-
-    List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
-
-    for (Iterator it = nation.keys(); it.hasNext();) {
-        String key = (String) it.next();
-        int count = (int) nation.getInt(key);
-        map = new HashMap<Object, Object>();
-        map.put("label", key);
-        map.put("y", count);
-        list.add(map);
-    }
-
-    String dataPoints = gsonObj.toJson(list);
-    List<Map<Object, Object>> list2 = new ArrayList<Map<Object, Object>>();
-    for (Iterator it = province.keys(); it.hasNext();) {
-        String key = (String) it.next();
-        int count = (int) province.getInt(key);
-        map = new HashMap<Object, Object>();
-        map.put("label", key);
-        map.put("y", count);
-        list2.add(map);
-    }
-    String dataPoints2 = gsonObj.toJson(list2);
-%>
 
 
 
@@ -65,47 +38,97 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-
-        <script type="text/javascript">
-            window.onload = function () {
-
-                var chart = new CanvasJS.Chart("chartContainer", {
-                    theme: "light2", // "light1", "dark1", "dark2"
-                    animationEnabled: true,
-                    title: {
-                        text: "Cases by Nation"
-                    },
-                    data: [{
-                            type: "pie",
-                            toolTipContent: "<b>{label}</b>: {y}",
-                            indexLabelFontSize: 16,
-                            indexLabel: "{label} - {y}",
-                            dataPoints: <%out.print(dataPoints);%>
-                        }]
-                });
-                chart.render();
-
-
-                var chart2 = new CanvasJS.Chart("chartContainer2", {
-                    theme: "light2", // "light1", "dark1", "dark2"
-                    animationEnabled: true,
-                    title: {
-                        text: "Cases by Province"
-                    },
-                    data: [{
-                            type: "pie",
-                            toolTipContent: "<b>{label}</b>: {y}",
-                            indexLabelFontSize: 16,
-                            indexLabel: "{label} - {y}",
-                            dataPoints: <%out.print(dataPoints2);%>
-                        }]
-                });
-                chart2.render();
+        <style>
+            #chartdiv {
+                width: 100%;
+                height: 900px;
             }
+             #chartdiv2 {
+                width: 100%;
+                height: 500px;
+            }
+
+        </style>
+
+        <!-- Resources -->
+        <script src="https://www.amcharts.com/lib/4/core.js"></script>
+        <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+        <script src="https://www.amcharts.com/lib/4/themes/kelly.js"></script>
+        <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+
+        <!-- Chart code -->
+        <script>
+            am4core.ready(function () {
+
+                // Themes begin
+                am4core.useTheme(am4themes_kelly);
+                am4core.useTheme(am4themes_animated);
+                // Themes end
+
+                var chart = am4core.create("chartdiv", am4charts.PieChart3D);
+                chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+
+                chart.data = [
+            <%
+                for (Iterator it = nation.keys(); it.hasNext();) {
+                    String key = (String) it.next();
+                    if (key.equals("Thai")) {
+                        continue;
+                    }
+                    int value = (int) nation.getInt(key);
+                    out.print("{ country:' " + key + " ',");
+                    out.print("cases:'" + value + "'} ,");
+
+                }
+            %>
+
+                ];
+
+                var series = chart.series.push(new am4charts.PieSeries3D());
+                series.dataFields.value = "cases";
+                series.dataFields.category = "country";
+
+
+
+
+                var chart2 = am4core.create("chartdiv2", am4charts.PieChart);
+                chart2.hiddenState.properties.opacity = 0; // this creates initial fade-in
+
+                chart2.data = [
+                    <%
+                     for (Iterator it = province.keys(); it.hasNext();) {
+                    String key = (String) it.next();
+                    int value = (int) province.getInt(key);
+                    out.print("{ province:' " + key + " ',");
+                    out.print("cases:'" + value + "'} ,");
+                   
+
+                }
+                %>
+               
+                ];
+
+                var series2 = chart2.series.push(new am4charts.PieSeries3D());
+                series2.dataFields.value = "cases";
+                series2.dataFields.category = "province";
+                series2.slices.template.cornerRadius = 6;
+                series2.colors.step = 3;
+                series2.labels.template.disabled = true;
+                
+                chart2.legend = new am4charts.Legend();
+                chart2.legend.position = "right";
+                chart2.legend.maxHeight = 500;
+                chart2.legend.scrollable = true;
+
+                series2.hiddenState.properties.endAngle = -90;
+
+            }); // end am4core.ready()
         </script>
 
 
-        <title>JSP Page</title>
+
+
+        <title>Nation</title>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark site-header sticky-top">
@@ -138,29 +161,26 @@
             </ul>
         </nav>
 
-
-
-
-
         <div class="container">
-            <div class="row justify-content-center pt-5">
-                <div class ="col-md-6" id="chartContainer" style="height: 370px; width: 100%;"></div>
-                <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
-                <div class ="col-md-6" id="chartContainer2" style="height: 370px; width: 100%;"></div>
-                <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+            <div class="row justify-content-center pt-5 text-center">
+                <h1>Foreigner Cases </h1>
+            </div>
+            <div class="row justify-content-center pt-5 text-center">
+
+                <div class = "col" id="chartdiv"></div>
 
             </div>
+            
+             <div class="row justify-content-center pt-5 text-center">
+                <h1>Case by Provinces </h1>
+            </div>
+            <div class="row justify-content-center pt-5 text-center">
 
+                <div class = "col" id="chartdiv2"></div>
+            
 
-
-
-
-
-
-
-
-
+            </div>
 
 
             <div class ="row py-5" >
@@ -217,44 +237,35 @@
 
             <div class ="row py-5" >
 
-
-
             </div>
-
-
-
-
-
-
-
 
         </div>
     </body>
-    
-                                            <footer class="page-footer font-small bg-dark pt-4 text-white">
+
+    <footer class="page-footer font-small bg-dark pt-4 text-white">
 
 
-                                            <div class="container">
+        <div class="container">
 
 
-                                                <ul class="list-unstyled list-inline text-center py-2">
-                                                    <li class="list-inline-item">
-                                                        <h5 class="mb-1">Data provided by </h5>
-                                                    </li>
-                                                    <li class="list-inline-item">
-                                                        <a href="https://covid19.th-stat.com/th/api" class="btn btn-outline-white btn-rounded">Covid-19 stat</a>
-                                                    </li>
-                                                </ul>
+            <ul class="list-unstyled list-inline text-center py-2">
+                <li class="list-inline-item">
+                    <h5 class="mb-1">Data provided by </h5>
+                </li>
+                <li class="list-inline-item">
+                    <a href="https://covid19.th-stat.com/th/api" class="btn btn-outline-white btn-rounded">Covid-19 stat</a>
+                </li>
+            </ul>
 
 
-                                            </div>
+        </div>
 
 
 
-                                            <div class="footer-copyright text-center py-3">
-                                                <a> 60050223 pisitchai siriratanachaikul</a>
-                                            </div>
+        <div class="footer-copyright text-center py-3">
+            <a> 60050223 pisitchai siriratanachaikul</a>
+        </div>
 
 
-                                        </footer>
+    </footer>
 </html>

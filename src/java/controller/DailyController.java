@@ -16,8 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.AllCasesData;
 import model.CaseSumData;
-import org.json.JSONArray;
+import model.DailyData;
+import model.TimelineData;
 import service.CaseSumService;
+import service.DailyService;
 import service.OpenCasesService;
 import service.TimelineService;
 
@@ -41,10 +43,17 @@ public class DailyController extends HttpServlet {
         
         try {
      //JSONArray caseArr = OpenCasesService.getData();
-     AllCasesData data = OpenCasesService.getDatas();
+     
+     DailyData data_daily = DailyService.getData();
+     TimelineData data_timeline = TimelineService.getDatas();
+    
+     AllCasesData data_case = OpenCasesService.getDatas();
      CaseSumData gender = CaseSumService.getGender();
      
-     request.setAttribute("OpenCase",data);
+     request.setAttribute("DailyData",data_daily);
+     request.setAttribute("TimelineData",data_timeline);
+     request.setAttribute("OpenCase",data_case);
+     
      request.setAttribute("CaseSum",gender);
             request.getRequestDispatcher("index.jsp").forward(request, response);
         } catch (Exception ex) {

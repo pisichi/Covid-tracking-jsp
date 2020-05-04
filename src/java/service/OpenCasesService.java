@@ -59,7 +59,7 @@ public class OpenCasesService {
             subdata.setProvince(innerObj.getString("Province"));
             subdata.setDistrict(innerObj.getString("District"));
             subdata.setProvinceEn(innerObj.getString("ProvinceEn"));
-            subdata.setNo(innerObj.getInt("No"));
+            //subdata.setNo(innerObj.getInt("No"));
             subdata.setAge(innerObj.getInt("Age"));
             subdata.setProvinceId(innerObj.getInt("ProvinceId"));
             cases.add(i, subdata);
@@ -127,7 +127,7 @@ public class OpenCasesService {
                             subdata.setProvince(innerObj.getString("Province"));
                             subdata.setDistrict(innerObj.getString("District"));
                             subdata.setProvinceEn(innerObj.getString("ProvinceEn"));
-                            subdata.setNo(innerObj.getInt("No"));
+                            //subdata.setNo(innerObj.getInt("No"));
                             subdata.setAge(innerObj.getInt("Age"));
                             subdata.setProvinceId(innerObj.getInt("ProvinceId"));
                             cases.add(subdata);

@@ -16,10 +16,6 @@
         <servlet-name>ViewAllCase</servlet-name>
         <servlet-class>controller.ViewAllCaseController</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>ViewNationController</servlet-name>
-        <servlet-class>controller.ViewNationController</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>DailyController</servlet-name>
         <url-pattern>/</url-pattern>
@@ -35,10 +31,6 @@
     <servlet-mapping>
         <servlet-name>ViewAllCase</servlet-name>
         <url-pattern>/viewallcase</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ViewNationController</servlet-name>
-        <url-pattern>/viewallnation</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

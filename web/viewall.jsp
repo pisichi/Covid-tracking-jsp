@@ -21,9 +21,6 @@
     TimelineData data = (TimelineData) request.getAttribute("Timeline");
     System.out.print(data.getUpdateDate());
     List<DailyData> jArr = data.getDaily();
-    float Rrate = 0f;
-    float Drate = 0f;
-    int record = 0;
 %>
 
 
@@ -77,10 +74,10 @@
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css
-">
-        <title>JSP Page</title>
+              ">
+        <title>Timeline</title>
         <script type="text/javascript">
             window.onload = function () {
 
@@ -211,7 +208,7 @@
                             out.println("<td> " + jArr.get(i).getDeaths() + "</td>");
                             out.println("<td> " + jArr.get(i).getNewDeaths() + "</td>");
                             out.println("<tr>");
-                            record += 1;
+                            
                         }
                     %>
                 </table>
@@ -224,31 +221,31 @@
         </div>
     </body>
 
-                                        <footer class="page-footer font-small bg-dark pt-4 text-white">
+    <footer class="page-footer font-small bg-dark pt-4 text-white">
 
 
-                                            <div class="container">
+        <div class="container">
 
 
-                                                <ul class="list-unstyled list-inline text-center py-2">
-                                                    <li class="list-inline-item">
-                                                        <h5 class="mb-1">Data provided by </h5>
-                                                    </li>
-                                                    <li class="list-inline-item">
-                                                        <a href="https://covid19.th-stat.com/th/api" class="btn btn-outline-white btn-rounded">Covid-19 stat</a>
-                                                    </li>
-                                                </ul>
+            <ul class="list-unstyled list-inline text-center py-2">
+                <li class="list-inline-item">
+                    <h5 class="mb-1">Data provided by </h5>
+                </li>
+                <li class="list-inline-item">
+                    <a href="https://covid19.th-stat.com/th/api" class="btn btn-outline-white btn-rounded">Covid-19 stat</a>
+                </li>
+            </ul>
 
 
-                                            </div>
+        </div>
 
 
 
-                                            <div class="footer-copyright text-center py-3">
-                                                <a> 60050223 pisitchai siriratanachaikul</a>
-                                            </div>
+        <div class="footer-copyright text-center py-3">
+            <a> 60050223 pisitchai siriratanachaikul</a>
+        </div>
 
 
-                                        </footer>
+    </footer>
 
 </html>

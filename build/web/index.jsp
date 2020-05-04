@@ -23,8 +23,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    DailyData data = DailyService.getData();
-    TimelineData data_timeline = TimelineService.getDatas();
+    DailyData data = (DailyData) request.getAttribute("DailyData");
+    TimelineData data_timeline = (TimelineData) request.getAttribute("TimelineData");
     List<DailyData> jArr = data_timeline.getDaily();
     AllCasesData data_cases = (AllCasesData) request.getAttribute("OpenCase");
     List<CasesData> caseArr = data_cases.getCases();
@@ -32,37 +32,7 @@
 %>
 
 
-<%
-    Gson gsonObj = new Gson();
-    Map<Object, Object> map = null;
-    List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
 
-    List<Map<Object, Object>> list_r = new ArrayList<Map<Object, Object>>();
-
-    List<Map<Object, Object>> list_d = new ArrayList<Map<Object, Object>>();
-
-    for (int i = jArr.size() - 1; i > jArr.size() - 11; i--) {
-
-        map = new HashMap<Object, Object>();
-        map.put("label", jArr.get(i).getUpdateDate());
-        map.put("y", jArr.get(i).getNewConfirmed());
-        list.add(map);
-
-        map = new HashMap<Object, Object>();
-        map.put("label", jArr.get(i).getUpdateDate());
-        map.put("y", jArr.get(i).getNewRecovered());
-        list_r.add(map);
-
-        map = new HashMap<Object, Object>();
-        map.put("label", jArr.get(i).getUpdateDate());
-        map.put("y", jArr.get(i).getNewDeaths());
-        list_d.add(map);
-    }
-
-    String dataPoints = gsonObj.toJson(list);
-    String dataPoints_r = gsonObj.toJson(list_r);
-    String dataPoints_d = gsonObj.toJson(list_d);
-%>
 
 <!DOCTYPE html>
 <html>
@@ -74,48 +44,110 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-        <script type="text/javascript">
-            window.onload = function () {
 
-                var chart = new CanvasJS.Chart("chartContainer", {
-                    theme: "light2",
-                    title: {
-                        text: "Confirmed cases perday"
-                    },
-                    axisX: {
-                        title: "Date"
-                    },
-                    axisY: {
-                        title: "confirmed case"
-                    },
-                    data: [{
-                            type: "line",
-                            name: "Confirmed",
-                            yValueFormatString: "Confirmed #,##0 cases",
-                            showInLegend: true,
-                            dataPoints: <%out.print(dataPoints);%>
-                        },
-                        {
-                            type: "line",
-                            name: "Recovered",
-                            yValueFormatString: "Recovered #,##0 cases",
-                            showInLegend: true,
-                            dataPoints: <%out.print(dataPoints_r);%>
-                        },
-                        {
-                            type: "line",
-                            name: "Deaths",
-                            yValueFormatString: "Death #,##0 cases",
-                            showInLegend: true,
-                            dataPoints: <%out.print(dataPoints_d);%>
-                        }]
-                });
-                chart.render();
 
+        <style>
+            #chartdiv {
+                width: 100%;
+                height: 500px;
             }
+
+        </style>
+
+        <!-- Resources -->
+        <script src="https://www.amcharts.com/lib/4/core.js"></script>
+        <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+        <script src="https://www.amcharts.com/lib/4/themes/kelly.js"></script>
+        <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+
+        <!-- Chart code -->
+        <script>
+            am4core.ready(function () {
+
+                // Themes begin
+                am4core.useTheme(am4themes_kelly);
+                am4core.useTheme(am4themes_animated);
+                // Themes end
+
+                // Create chart instance
+                var chart = am4core.create("chartdiv", am4charts.XYChart);
+
+                // Set input format for the dates
+                chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";
+                chart.legend = new am4charts.Legend();
+                // Create axes
+                var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+                var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+                // Create series
+                var series1 = chart.series.push(new am4charts.LineSeries());
+                series1.name = "New Confirmed";
+                series1.dataFields.valueY = "value";
+                series1.dataFields.dateX = "date";
+                series1.tooltipText = "{value}"
+                series1.strokeWidth = 2;
+                series1.minBulletDistance = 15;
+
+                series1.data = [
+            <%
+                for (int i = jArr.size() - 1; i > jArr.size() - 11; i--) {
+
+                    out.print("{ 'date': '" + jArr.get(i).getUpdateDate() + "', ");
+                    out.print("    'value': " + jArr.get(i).getNewConfirmed() + "  },");
+                }
+            %>
+                ];
+
+                var series2 = chart.series.push(new am4charts.LineSeries());
+                 series2.name = "New Recovered";
+                series2.dataFields.valueY = "value";
+                series2.dataFields.dateX = "date";
+                series2.tooltipText = "{value}"
+                series2.strokeWidth = 2;
+                series2.minBulletDistance = 15;
+
+                series2.data = [
+            <%
+                for (int i = jArr.size() - 1; i > jArr.size() - 11; i--) {
+
+                    out.print("{ 'date': '" + jArr.get(i).getUpdateDate() + "', ");
+                    out.print("    'value': " + jArr.get(i).getNewRecovered() + "  },");
+                }
+            %>
+                ];
+
+
+                // Make bullets grow on hover
+                var bullet = series1.bullets.push(new am4charts.CircleBullet());
+                bullet.circle.strokeWidth = 2;
+                bullet.circle.radius = 4;
+                bullet.circle.fill = am4core.color("#fff");
+
+                var bullethover = bullet.states.create("hover");
+                bullethover.properties.scale = 1.3;
+
+
+                var bullet2 = series2.bullets.push(new am4charts.CircleBullet());
+                bullet2.circle.strokeWidth = 2;
+                bullet2.circle.radius = 4;
+                bullet2.circle.fill = am4core.color("#fff");
+
+                var bullethover2 = bullet2.states.create("hover");
+                bullethover2.properties.scale = 1.3;
+
+                // Make a panning cursor
+                chart.cursor = new am4charts.XYCursor();
+                chart.cursor.behavior = "panXY";
+                chart.cursor.xAxis = dateAxis;
+                chart.cursor.snapToSeries = series1;
+
+
+
+
+            }); // end am4core.ready()
         </script>
 
-        <title>JSP Page</title>
+        <title>Covid-19</title>
 
         <jsp:useBean id="test" class="model.DailyData" scope="request"/>
     </head>
@@ -188,8 +220,7 @@
                                         <div class="card-text">
                                             <h1>
 
-                                                <%
-                                                    out.print(data.getConfirmed());
+                                                <%                                                    out.print(data.getConfirmed());
                                                 %>
                                             </h1>
                                         </div>
@@ -268,8 +299,13 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+
                                         </div>
 
+                                        </div>
+                                        <div class = "row justify-content-center">
+                                            <%  out.print("last update: " + data.getUpdateDate()); %>
                                         </div>
                                         <h1>
                                             Ratio
@@ -339,10 +375,11 @@
 
                                         <div class ="row py-5" >
 
-                                            <h1> Last 10 days </h1>     <a class="btn btn-primary mx-5 my-2" href="/TermProject_component/viewall"> view all data </a>
+                                            <h1> Last 10 days </h1>    
+                                            <a class="btn btn-warning mx-5 my-2" href="/TermProject_component/viewall"> view all data </a>
 
-                                            <div id="chartContainer" style="height: 370px; width: 100%;" class = "mb-3"></div>
-                                            <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+                                            <div id="chartdiv"></div>
 
                                             <table class="table table-striped table-dark ">
                                                 <tr>
@@ -380,7 +417,7 @@
                                         <div class ="row py-5" >
                                             <div class = "col-6">
                                                 <div class = "row align-items-center">
-                                                    <h3> Latest Cases </h3>     <a class="btn btn-primary mx-5 my-2" href="/TermProject_component/viewallcase"> view all case </a>
+                                                    <h3> Latest Cases </h3>     <a class="btn btn-warning mx-5 my-2" href="/TermProject_component/viewallcase"> view all case </a>
 
 
                                                     <table class="table table-striped table-dark ">
@@ -411,7 +448,7 @@
                                             <div class = "col-6">
                                                 <div class = "row align-items-center ">
                                                     <h3> Cases by Nation, province </h3>     
-                                                    <a class="btn btn-primary mx-5 my-2" href="/TermProject_component/viewallnation"> view all data </a>
+                                                    <a class="btn btn-warning mx-5 my-2" href="/TermProject_component/viewallnation"> view all data </a>
                                                     <img src="https://i.imgur.com/2mtzziJ.png" class="img-fluid" alt="Responsive image">
                                                 </div>
                                             </div>
@@ -466,7 +503,7 @@
                                                 background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,208,17,1) 100%);
                                                 filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ffd011",GradientType=1);
                                             }
-                                         
+
                                         </style>
 
                                         </html>

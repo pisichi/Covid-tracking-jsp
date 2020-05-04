@@ -40,15 +40,9 @@ public class ViewallDataController extends HttpServlet {
         try {
             //JSONArray jArr = TimelineService.getData();
             
-          TimelineData data = TimelineService.getDatas();
-          System.out.print(data.getUpdateDate());
-           List<DailyData> jArr = data.getDaily();
-            System.out.print(jArr.get(0).getUpdateDate());
-          int a = 1;
+           TimelineData data = TimelineService.getDatas();
            request.setAttribute("Timeline", data);
-           request.setAttribute("num", a);
-
-
+ 
         String nation = request.getParameter("name");
         request.setAttribute("nation", nation);
               request.getRequestDispatcher("viewall.jsp").forward(request, response);
