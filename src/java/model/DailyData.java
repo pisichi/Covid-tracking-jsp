@@ -5,13 +5,11 @@
  */
 package model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  *
  * @author component
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class DailyData {
 
     private int Confirmed;
